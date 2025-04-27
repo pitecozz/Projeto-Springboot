@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Lista de Tarefas</h1>
+<p>Usuário: <span th:text="${#httpSession.getAttribute('usuarioLogado').login}"></span></p>
+
+<form th:action="@{/tarefas/adicionar}" method="post">
+    <input type="text" name="descricao" placeholder="Nova tarefa" required>
+    <button type="submit">Adicionar</button>
+</form>
+
+<ul>
+    <li th:each="tarefa, stat : ${tarefas}">
+        <span th:text="${tarefa.descricao}"></span>
+        <span th:if="${tarefa.concluida}" style="color: green;"> (Concluída)</span>
+        <span th:unless="${tarefa.concluida}">
+                <a th:href="@{/tarefas/concluir/{id}(id=${stat.index})}">Marcar como concluída</a>
+            </span>
+    </li>
+</ul>
+
+<a href="/home">Voltar</a>
+<a href="/logout">Sair</a>
+</body>
+</html>
